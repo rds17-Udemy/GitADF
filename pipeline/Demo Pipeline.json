@@ -1,5 +1,5 @@
 {
-	"name": "pipeline-TestGithub",
+	"name": "Demo Pipeline",
 	"properties": {
 		"annotations": []
 	}
