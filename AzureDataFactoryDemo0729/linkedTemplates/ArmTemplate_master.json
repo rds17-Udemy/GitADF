@@ -1,0 +1,118 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "AzureDataFactoryDemo0729"
+		},
+		"ADFWorkshop_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ADFWorkshop'"
+		},
+		"Assignement2_SQL_LS_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Assignement2_SQL_LS'"
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+		},
+		"FileLocal_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FileLocal'"
+		},
+		"adfworkshop_DB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'adfworkshop_DB'"
+		},
+		"ADFWorkshop_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adfworkshop02082022.dfs.core.windows.net/"
+		},
+		"FileLocal_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\GDC-LAPTOP-004\\Users\\Reden\\OneDrive - 3Cloud\\Desktop\\ADF"
+		},
+		"FileLocal_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "Reden"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "AzureDataFactoryDemo0729_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"ADFWorkshop_accountKey": {
+						"value": "[parameters('ADFWorkshop_accountKey')]"
+					},
+					"Assignement2_SQL_LS_connectionString": {
+						"value": "[parameters('Assignement2_SQL_LS_connectionString')]"
+					},
+					"AzureSqlDatabase1_connectionString": {
+						"value": "[parameters('AzureSqlDatabase1_connectionString')]"
+					},
+					"adfworkshop_DB_connectionString": {
+						"value": "[parameters('adfworkshop_DB_connectionString')]"
+					},
+					"FileLocal_password": {
+						"value": "[parameters('FileLocal_password')]"
+					},
+					"ADFWorkshop_properties_typeProperties_url": {
+						"value": "[parameters('ADFWorkshop_properties_typeProperties_url')]"
+					},
+					"FileLocal_properties_typeProperties_host": {
+						"value": "[parameters('FileLocal_properties_typeProperties_host')]"
+					},
+					"FileLocal_properties_typeProperties_userId": {
+						"value": "[parameters('FileLocal_properties_typeProperties_userId')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "AzureDataFactoryDemo0729_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'AzureDataFactoryDemo0729_ArmTemplate_0')]"
+			]
+		}
+	]
+}
