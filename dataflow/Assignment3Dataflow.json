@@ -1,0 +1,134 @@
+{
+	"name": "Assignment3Dataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "adfworkshop_DB",
+						"type": "LinkedServiceReference"
+					},
+					"name": "CustomerAsignement3"
+				},
+				{
+					"linkedService": {
+						"referenceName": "adfworkshop_DB",
+						"type": "LinkedServiceReference"
+					},
+					"name": "DepartmentAssignment3"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "Assignement2_SQL_LS",
+						"type": "LinkedServiceReference"
+					},
+					"name": "HRSink"
+				},
+				{
+					"linkedService": {
+						"referenceName": "Assignement2_SQL_LS",
+						"type": "LinkedServiceReference"
+					},
+					"name": "FinanceSink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "GetDept"
+				},
+				{
+					"name": "LessenColms"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "select2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Cust_ID as integer,",
+				"          Customer_Name as string,",
+				"          Dept_ID as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'Customer_Assignment3',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> CustomerAsignement3",
+				"source(output(",
+				"          Dept_ID as integer,",
+				"          Dept_Name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'Department_Assignment3',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> DepartmentAssignment3",
+				"CustomerAsignement3, DepartmentAssignment3 join(CustomerAsignement3@Dept_ID == DepartmentAssignment3@Dept_ID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> GetDept",
+				"GetDept select(mapColumn(",
+				"          Cust_ID,",
+				"          Customer_Name,",
+				"          Dept_Name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> LessenColms",
+				"LessenColms split(Dept_Name == \"HR\",",
+				"     disjoint: false) ~> split1@(HR, Finance)",
+				"split1@HR select(mapColumn(",
+				"          Cust_ID,",
+				"          Customer_Name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"split1@Finance select(mapColumn(",
+				"          Cust_ID,",
+				"          Customer_Name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'HR',",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> HRSink",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'Finance',",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> FinanceSink"
+			]
+		}
+	}
+}

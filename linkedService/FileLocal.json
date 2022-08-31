@@ -1,0 +1,17 @@
+{
+	"name": "FileLocal",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "\\\\GDC-LAPTOP-004\\Users\\Reden\\OneDrive - 3Cloud\\Desktop\\ADF",
+			"userId": "Reden",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJhNzNjZTE0Zi1jNjMzLTQ5NDAtYWIxYi0wYzA1ZWMwNjUwNWEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SelfHosted-IR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"name": "AzureSqlTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "prod_cat_code",
+				"type": "varchar"
+			},
+			{
+				"name": "product_category",
+				"type": "varchar"
+			},
+			{
+				"name": "product_sub_cat_code",
+				"type": "varchar"
+			},
+			{
+				"name": "product_subcategory",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CopyDemo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

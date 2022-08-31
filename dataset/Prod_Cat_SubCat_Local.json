@@ -1,0 +1,40 @@
+{
+	"name": "Prod_Cat_SubCat_Local",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FileLocal",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": "Product_Category_Subcategory.csv"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "prod_cat_code",
+				"type": "String"
+			},
+			{
+				"name": "prod_cat",
+				"type": "String"
+			},
+			{
+				"name": "prod_sub_cat_code",
+				"type": "String"
+			},
+			{
+				"name": "prod_subcat",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
